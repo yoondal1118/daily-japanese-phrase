@@ -1,0 +1,89 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Design System for Japanese Quote App */
+
+@layer base {
+  :root {
+    /* Pure white background, pure black text */
+    --background: 220 20% 97%;
+    --foreground: 0 0% 0%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 0%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 0%;
+
+    /* Primary - elegant dark for buttons */
+    --primary: 220 15% 20%;
+    --primary-foreground: 0 0% 100%;
+
+    /* Secondary */
+    --secondary: 0 0% 96%;
+    --secondary-foreground: 220 15% 20%;
+
+    --muted: 0 0% 96%;
+    --muted-foreground: 220 10% 50%;
+
+    --accent: 0 0% 96%;
+    --accent-foreground: 220 15% 20%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 10% 88%;
+    --input: 220 10% 88%;
+    --ring: 0 0% 0%;
+
+    --radius: 0.75rem;
+
+    /* Font family */
+    --font-sans: 'Malgun Gothic', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    
+    /* Gradient background */
+    --gradient-bg: linear-gradient(135deg, hsl(220 20% 97%) 0%, hsl(240 15% 95%) 50%, hsl(220 25% 93%) 100%);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    font-family: var(--font-sans);
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: var(--font-sans);
+    background: var(--gradient-bg);
+    min-height: 100vh;
+  }
+}
+
+/* Quote text styling */
+.quote-text {
+  font-size: 20px;
+  line-height: 2;
+}
+
+/* Button hover animation */
+.quote-button {
+  @apply transition-all duration-300 ease-out shadow-md;
+}
+
+.quote-button:hover {
+  @apply scale-105 shadow-lg;
+}
+
+.quote-button:active {
+  @apply scale-95;
+}
+
+/* Kanji notes styling */
+.kanji-note-item {
+  @apply py-2 border-b border-border last:border-b-0;
+}
