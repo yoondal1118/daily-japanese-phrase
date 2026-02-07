@@ -3,10 +3,30 @@ import { quotes, Quote } from "@/data/quotes";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { Volume2 } from "lucide-react";
 
 const Index = () => {
   const [currentQuote, setCurrentQuote] = useState<Quote | null>(null);
   const [hasStarted, setHasStarted] = useState(false);
+  const [isSpeaking, setIsSpeaking] = useState(false);
+
+  const speakJapanese = useCallback((text: string) => {
+    if ('speechSynthesis' in window) {
+      // 이미 재생 중이면 중지
+      window.speechSynthesis.cancel();
+      
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'ja-JP';
+      utterance.rate = 0.8; // 약간 느리게
+      utterance.pitch = 1;
+      
+      utterance.onstart = () => setIsSpeaking(true);
+      utterance.onend = () => setIsSpeaking(false);
+      utterance.onerror = () => setIsSpeaking(false);
+      
+      window.speechSynthesis.speak(utterance);
+    }
+  }, []);
 
   const getRandomQuote = useCallback((excludeQuote?: Quote | null): Quote => {
     let availableQuotes = quotes;
@@ -43,8 +63,15 @@ const Index = () => {
                 {/* Quote Section - 메인 콘텐츠 강조 */}
                 <div className="mb-4 flex min-h-[180px] items-center justify-center rounded-xl bg-secondary/50 px-6 py-8 sm:px-8 sm:py-10">
                   <div className="space-y-4" style={{ fontSize: '20px', lineHeight: '1.8' }}>
-                    {/* Japanese Original */}
-                    <p className="text-foreground">{currentQuote.jp_original}</p>
+                    {/* Japanese Original - 클릭하면 읽어줌 */}
+                    <p 
+                      className={`text-foreground cursor-pointer hover:text-primary transition-colors inline-flex items-center gap-2 ${isSpeaking ? 'text-primary' : ''}`}
+                      onClick={() => speakJapanese(currentQuote.jp_original)}
+                      title="클릭하면 발음을 들을 수 있어요"
+                    >
+                      {currentQuote.jp_original}
+                      <Volume2 className={`w-5 h-5 ${isSpeaking ? 'animate-pulse' : 'opacity-50'}`} />
+                    </p>
                     
                     {/* Yomigana */}
                     <p className="text-muted-foreground">{currentQuote.jp_yomigana}</p>
